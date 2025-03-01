@@ -1,0 +1,17 @@
+spring:
+    datasource:
+        url: jdbc:postgresql://localhost:5432/postgres
+        username: myuser
+        password: mypassword
+    jpa:
+        show-sql: true
+        hibernate:
+            ddl-auto: update
+    sql:
+        init:
+            # initialize data.sql
+            #mode: always
+    rabbitmq:
+        username: myuser
+        password: mypass
+                        
