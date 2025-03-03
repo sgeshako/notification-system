@@ -5,12 +5,6 @@ spring:
         password: mypostgrespass
     jpa:
         show-sql: true
-        hibernate:
-            ddl-auto: update
-    sql:
-        init:
-            # initialize data.sql
-            #mode: always
     rabbitmq:
         username: myrabbitmquser
         password: myrabbitmqpass

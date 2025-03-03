@@ -18,7 +18,7 @@ import com.slack.api.Slack;
 import com.slack.api.methods.SlackApiException;
 import com.slack.api.methods.response.chat.ChatPostMessageResponse;
 
-@Profile("prod")
+@Profile({ "prod", "local" })
 @Transactional
 @Service
 public class SlackServiceImpl implements SlackService {

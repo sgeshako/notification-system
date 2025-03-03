@@ -3,13 +3,6 @@ spring:
         url: ${SPRING_DATASOURCE_URL}
         username: ${SPRING_DATASOURCE_USERNAME}
         password: ${SPRING_DATASOURCE_PASSWORD}
-    jpa:
-        hibernate:
-            ddl-auto: update
-    sql:
-        init:
-            # initialize data.sql
-            #mode: always
     rabbitmq:
         username: ${SPRING_RABBITMQ_USERNAME}
         password: ${SPRING_RABBITMQ_PASSWORD}

@@ -25,18 +25,6 @@ public class NotificationMessage extends BaseEntity {
 	
 	@Column(name = "arrived_at", nullable = false)
 	private LocalDateTime arrivedAt;
-	
-	@Column(name = "in_queue_at")
-	private LocalDateTime inQueueAt;
-	
-	@Column(name = "in_processing_at")
-	private LocalDateTime inProcessingAt;
-	
-	@Column(name = "sent_ok_at")
-	private LocalDateTime sentOkAt;
-	
-	@Column(name = "sending_failure_at")
-	private LocalDateTime sendingFailureAt;
 
 	public UUID getId() {
 		return id;
@@ -60,38 +48,6 @@ public class NotificationMessage extends BaseEntity {
 
 	public void setArrivedAt(LocalDateTime arrivedAt) {
 		this.arrivedAt = arrivedAt;
-	}
-
-	public LocalDateTime getInQueueAt() {
-		return inQueueAt;
-	}
-
-	public void setInQueueAt(LocalDateTime inQueueAt) {
-		this.inQueueAt = inQueueAt;
-	}
-
-	public LocalDateTime getInProcessingAt() {
-		return inProcessingAt;
-	}
-
-	public void setInProcessingAt(LocalDateTime inProcessingAt) {
-		this.inProcessingAt = inProcessingAt;
-	}
-
-	public LocalDateTime getSentOkAt() {
-		return sentOkAt;
-	}
-
-	public void setSentOkAt(LocalDateTime sentOkAt) {
-		this.sentOkAt = sentOkAt;
-	}
-
-	public LocalDateTime getSendingFailureAt() {
-		return sendingFailureAt;
-	}
-
-	public void setSendingFailureAt(LocalDateTime sendingFailureAt) {
-		this.sendingFailureAt = sendingFailureAt;
 	}
 
 }

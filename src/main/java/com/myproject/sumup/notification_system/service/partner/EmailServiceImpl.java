@@ -17,7 +17,7 @@ import com.myproject.sumup.notification_system.service.ProcessingException;
 import jakarta.mail.MessagingException;
 import jakarta.mail.internet.MimeMessage;
 
-@Profile("prod")
+@Profile({ "prod", "local" })
 @Transactional
 @Service
 public class EmailServiceImpl implements EmailService {

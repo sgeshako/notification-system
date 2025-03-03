@@ -1,0 +1,14 @@
+management:
+  endpoints:
+    web:
+      exposure:
+        include: health,info,metrics
+        
+spring:
+    jpa:
+        hibernate:
+            ddl-auto: update
+    sql:
+        init:
+            # initialize schema.sql
+            #mode: always
