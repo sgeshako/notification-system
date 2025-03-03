@@ -32,8 +32,8 @@ public class Processing extends BaseEntity {
 	@Enumerated(EnumType.STRING)
 	private ProcessingStatus status;
 	
-//	@Column(name = "deleted")
-//	private boolean deleted;
+	@Column(name = "details")
+	private String details;
 
 	public UUID getId() {
 		return id;
@@ -59,11 +59,11 @@ public class Processing extends BaseEntity {
 		this.status = status;
 	}
 
-//	public boolean isDeleted() {
-//		return deleted;
-//	}
-//
-//	public void setDeleted(boolean deleted) {
-//		this.deleted = deleted;
-//	}
+	public String getDetails() {
+		return details;
+	}
+
+	public void setDetails(String details) {
+		this.details = details;
+	}
 }

@@ -1,8 +1,8 @@
 spring:
     datasource:
         url: jdbc:postgresql://localhost:5432/postgres
-        username: myuser
-        password: mypassword
+        username: mypostgresuser
+        password: mypostgrespass
     jpa:
         show-sql: true
         hibernate:
@@ -12,6 +12,6 @@ spring:
             # initialize data.sql
             #mode: always
     rabbitmq:
-        username: myuser
-        password: mypass
+        username: myrabbitmquser
+        password: myrabbitmqpass
                         

@@ -1,0 +1,58 @@
+
+services:
+  mypostgresdb:
+    image: postgres
+    environment:
+      POSTGRES_USER: ${POSTGRES_USER}
+      POSTGRES_PASSWORD: ${POSTGRES_PASSWORD}
+    networks:
+      - my_overlay_network
+      
+  mypgadmin:
+    image: dpage/pgadmin4
+    environment:
+      PGADMIN_DEFAULT_EMAIL: ${PGADMIN_USER_EMAIL}
+      PGADMIN_DEFAULT_PASSWORD: ${PGADMIN_PASSWORD}
+    ports:
+      - "5050:80"
+    networks:
+      - my_overlay_network
+      
+  myrabbitmq:
+    image: rabbitmq:management
+    environment:
+      - RABBITMQ_DEFAULT_USER=${RABBITMQ_USER}
+      - RABBITMQ_DEFAULT_PASS=${RABBITMQ_PASSWORD}
+    ports:
+      - "15672:15672" # Management UI
+    networks:
+      - my_overlay_network
+      
+  notification-system-app:
+    image: notification-system:latest
+    build: .
+    depends_on: 
+      - mypostgresdb
+      - myrabbitmq
+    environment:
+      SPRING_PROFILES_ACTIVE: prod
+      SPRING_DATASOURCE_URL: jdbc:postgresql://mypostgresdb:5432/postgres
+      SPRING_DATASOURCE_USERNAME: ${POSTGRES_USER}
+      SPRING_DATASOURCE_PASSWORD: ${POSTGRES_PASSWORD}
+      SPRING_RABBITMQ_ADDRESSES: amqp://myrabbitmq
+      SPRING_RABBITMQ_USERNAME: ${RABBITMQ_USER}
+      SPRING_RABBITMQ_PASSWORD: ${RABBITMQ_PASSWORD}
+      SPRING_MAIL_HOST: ${SMTP_HOST}
+      SPRING_MAIL_PORT: ${SMTP_PORT}
+      SPRING_MAIL_USERNAME: ${SMTP_USER}
+      SPRING_MAIL_PASSWORD: ${SMTP_PASSWORD}
+      SLACK_BOT_TOKEN: ${SLACK_BOT_TOKEN}
+    ports:
+      - "8080:8080"
+    networks:
+      - my_overlay_network
+
+networks:
+  my_overlay_network:
+    driver: overlay
+      

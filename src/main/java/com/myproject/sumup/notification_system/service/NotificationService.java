@@ -67,7 +67,7 @@ public class NotificationService {
 		insertProcessingRecord(persistedMessage);
 		
 		SlackMsgData data = new SlackMsgData();
-		data.setChannel("#SlackChannel");
+		data.setChannel("C08FRK3SRUK");
 		data.setMessage("Hello everybody in Slack");
 		data.setNotificationMessage(persistedMessage);
 		entityManager.persist(data);

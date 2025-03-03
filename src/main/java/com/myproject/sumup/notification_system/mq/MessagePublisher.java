@@ -24,7 +24,7 @@ public class MessagePublisher {
 	
 	@Async
 	public void sendAsyncMessage(UUID messageId, MessageChannel channel) {
-		LOG.info("Publishing message {} for channel {}.", messageId, channel);
+		LOG.debug("Publishing message {} for channel {}.", messageId, channel);
 		rabbitTemplate.convertAndSend(
 				DIRECT_EXCHANGE_NAME, 
 				RESOLVE_ROUTING_KEY.apply(channel), 

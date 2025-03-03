@@ -2,19 +2,21 @@
 services:
   postgres:
     image: postgres
-    container_name: mypostgresdb2
+    container_name: mypostgresdb
     environment:
-      POSTGRES_USER: myuser
-      POSTGRES_PASSWORD: mypassword
+      POSTGRES_USER: mypostgresuser
+      POSTGRES_PASSWORD: mypostgrespass
+    ports:
+      - "5432:5432"
     networks:
       - my_custom_network
       
   pgadmin:
     image: dpage/pgadmin4
-    container_name: pgadmin-container2
+    container_name: mypgadmin
     environment:
-      PGADMIN_DEFAULT_EMAIL: user@domain.com
-      PGADMIN_DEFAULT_PASSWORD: catsarecool
+      PGADMIN_DEFAULT_EMAIL: mypgadminuser@fakedomain.com
+      PGADMIN_DEFAULT_PASSWORD: mypgadminpass
     ports:
       - "5050:80"
     networks:
@@ -22,33 +24,35 @@ services:
       
   rabbitmq:
     image: rabbitmq:management
-    container_name: myrabbitmq2
+    container_name: myrabbitmq
     environment:
-      - RABBITMQ_DEFAULT_USER=myuser
-      - RABBITMQ_DEFAULT_PASS=mypass
+      - RABBITMQ_DEFAULT_USER=myrabbitmquser
+      - RABBITMQ_DEFAULT_PASS=myrabbitmqpass
     ports:
-      #- "5672:5672" # AMQP protocol
+      - "5672:5672" # AMQP protocol
       - "15672:15672" # Management UI
     networks:
       - my_custom_network
       
-  notification-service:
-    build: .
-    container_name: notification-system
-    depends_on: 
-      - postgres
-      - rabbitmq
-    environment:
-      SPRING_DATASOURCE_URL: jdbc:postgresql://mypostgresdb2:5432/postgres
-      SPRING_DATASOURCE_USERNAME: myuser
-      SPRING_DATASOURCE_PASSWORD: mypassword
-      SPRING_RABBITMQ_ADDRESSES: amqp://myrabbitmq2
-      SPRING_RABBITMQ_USERNAME: myuser
-      SPRING_RABBITMQ_PASSWORD: mypass
-    ports:
-      - "8080:8080"
-    networks:
-      - my_custom_network
+  # Uncomment for local testing    
+  # notification-service:
+    # build: .
+    # container_name: notification-system-app
+    # depends_on: 
+      # - mypostgresdb
+      # - myrabbitmq
+    # environment:
+      # SPRING_PROFILES_ACTIVE: dev
+      # SPRING_DATASOURCE_URL: jdbc:postgresql://mypostgresdb:5432/postgres
+      # SPRING_DATASOURCE_USERNAME: mypostgresuser
+      # SPRING_DATASOURCE_PASSWORD: mypostgrespass
+      # SPRING_RABBITMQ_ADDRESSES: amqp://myrabbitmq
+      # SPRING_RABBITMQ_USERNAME: myrabbitmquser
+      # SPRING_RABBITMQ_PASSWORD: myrabbitmqpass
+    # ports:
+      # - "8080:8080"
+    # networks:
+      # - my_custom_network
 
 networks:
   my_custom_network:
