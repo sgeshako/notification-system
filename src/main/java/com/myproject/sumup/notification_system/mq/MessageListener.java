@@ -47,7 +47,7 @@ public class MessageListener {
 			processingService.updateProcessingStatus(
 					message.getMessageId(), 
 					ProcessingStatus.SEND_FAILURE,
-					e.getCause().getMessage());
+					e.getCause() != null ? e.getCause().getMessage() : e.getMessage());
 		}
 	}
 	
@@ -64,7 +64,7 @@ public class MessageListener {
 			processingService.updateProcessingStatus(
 					message.getMessageId(), 
 					ProcessingStatus.SEND_FAILURE,
-					e.getCause().getMessage());
+					e.getCause() != null ? e.getCause().getMessage() : e.getMessage());
 		}
 	}
 	

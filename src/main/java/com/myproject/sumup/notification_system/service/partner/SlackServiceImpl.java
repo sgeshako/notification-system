@@ -36,7 +36,8 @@ public class SlackServiceImpl implements SlackService {
 	
 	@Override
 	public void sendSlackMessage(UUID messageId) throws ProcessingException {
-		SlackMsgData slackMsgData = slackDataRepo.findById(messageId).orElseThrow();
+		SlackMsgData slackMsgData = slackDataRepo.findById(messageId)
+				.orElseThrow(() -> new ProcessingException("No slack data found for messageId " + messageId));
 		
 		try {
 			ChatPostMessageResponse response = 

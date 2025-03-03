@@ -32,21 +32,16 @@ public class EmailServiceImpl implements EmailService {
 
 	@Override
 	public void sendEmail(UUID messageId) throws ProcessingException {
-//		SimpleMailMessage message = new SimpleMailMessage();
-//		message.setTo(to);
-//		message.setSubject(subject);
-//		message.setText(body);
-		EmailData emailData = emailDataRepo.findById(messageId).orElseThrow();
+
+		EmailData emailData = emailDataRepo.findById(messageId)
+				.orElseThrow(() -> new ProcessingException("No email data found for messageId " + messageId));
 		
 		try {
 			MimeMessage message = mailSender.createMimeMessage();
 			message.setFrom("someguy@example.com");
-		    message.setRecipients(MimeMessage.RecipientType.TO, "test.user@gmail.com");
+		    message.setRecipients(MimeMessage.RecipientType.TO, emailData.getRecipient());
 		    message.setSubject(emailData.getSubject());
-			String htmlContent = "<h1>This is a test VERY IMPORTANT email</h1>" +
-	                "<p>It can contain <strong>HTML</strong> content.</p>" + 
-					"<p>Data in this email uses <strong>" + emailData.getBody() + "</strong> from the DB.</p>";
-				message.setContent(htmlContent, "text/html; charset=utf-8");
+			message.setContent(emailData.getBody(), "text/html; charset=utf-8");
 
 			mailSender.send(message);
 		} catch (MessagingException e) {

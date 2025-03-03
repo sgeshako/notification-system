@@ -7,6 +7,9 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
+import com.myproject.sumup.notification_system.controller.dto.EmailInput;
+import com.myproject.sumup.notification_system.controller.dto.SlackInput;
+import com.myproject.sumup.notification_system.controller.dto.SmsInput;
 import com.myproject.sumup.notification_system.domain.MessageChannel;
 import com.myproject.sumup.notification_system.domain.NotificationMessage;
 import com.myproject.sumup.notification_system.domain.Processing;
@@ -26,49 +29,46 @@ public class NotificationService {
 	@Autowired
 	private NotificationMessageRepository notificationMessageRepo;
 	
-//	@Autowired
-//	private EmailDataRepository emailDataRepo;
-	
 	@Autowired
 	private EntityManager entityManager;
 	
 	@Autowired
 	private ProcessingRepository processingRepo;
 	
-	public UUID registerEmail() {
+	public UUID registerEmail(EmailInput input) {
 		NotificationMessage persistedMessage = insertNotificationMessage(MessageChannel.EMAIL);
 		insertProcessingRecord(persistedMessage);
 		
 		EmailData data = new EmailData();
-		data.setRecipient("whomever");
-		data.setSubject("Whatever");
-		data.setBody("Hello Email");
+		data.setRecipient(input.getRecipient());
+		data.setSubject(input.getSubject());
+		data.setBody(input.getBody());
 		data.setNotificationMessage(persistedMessage);
 		entityManager.persist(data);
 		
 		return persistedMessage.getId();
 	}
 	
-	public UUID registerSms() {
+	public UUID registerSms(SmsInput input) {
 		NotificationMessage persistedMessage = insertNotificationMessage(MessageChannel.EMAIL);
 		insertProcessingRecord(persistedMessage);
 		
 		SmsData data = new SmsData();
-		data.setRecipient("+999999999");
-		data.setBody("Hello SMS");
+		data.setRecipient(input.getRecipient());
+		data.setBody(input.getBody());
 		data.setNotificationMessage(persistedMessage);
 		entityManager.persist(data);
 		
 		return persistedMessage.getId();
 	}
 	
-	public UUID registerSlack() {
+	public UUID registerSlack(SlackInput input) {
 		NotificationMessage persistedMessage = insertNotificationMessage(MessageChannel.EMAIL);
 		insertProcessingRecord(persistedMessage);
 		
 		SlackMsgData data = new SlackMsgData();
-		data.setChannel("C08FRK3SRUK");
-		data.setMessage("Hello everybody in Slack");
+		data.setChannel(input.getChannel());
+		data.setMessage(input.getMessage());
 		data.setNotificationMessage(persistedMessage);
 		entityManager.persist(data);
 		

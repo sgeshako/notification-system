@@ -1,19 +1,21 @@
 package com.myproject.sumup.notification_system.controller;
 
-import java.util.List;
 import java.util.Map;
 import java.util.UUID;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.PostMapping;
+import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RestController;
 
+import com.myproject.sumup.notification_system.controller.dto.EmailInput;
+import com.myproject.sumup.notification_system.controller.dto.SlackInput;
+import com.myproject.sumup.notification_system.controller.dto.SmsInput;
+import com.myproject.sumup.notification_system.controller.validator.InputValidator;
 import com.myproject.sumup.notification_system.domain.MessageChannel;
 import com.myproject.sumup.notification_system.mq.MessagePublisher;
 import com.myproject.sumup.notification_system.service.NotificationService;
-
-import lombok.Data;
 
 @RestController
 public class NotificationsController {
@@ -25,9 +27,13 @@ public class NotificationsController {
 	private MessagePublisher messagePublisher;
 	
 	@PostMapping(path = "/email")
-	public ResponseEntity<?> sendEmail() {
+	public ResponseEntity<?> sendEmail(@RequestBody EmailInput input) {
 		
-		UUID emailId = notificationService.registerEmail();
+		if (!InputValidator.validateEmail(input.getRecipient())) {
+			return ResponseEntity.badRequest().body("Please provide valid email.");
+		}
+		
+		UUID emailId = notificationService.registerEmail(input);
 		
 		messagePublisher.sendAsyncMessage(emailId, MessageChannel.EMAIL);
 		
@@ -35,9 +41,13 @@ public class NotificationsController {
 	}
 	
 	@PostMapping(path = "/sms")
-	public ResponseEntity<?> sendSms() {
+	public ResponseEntity<?> sendSms(@RequestBody SmsInput input) {
 		
-		UUID smsId = notificationService.registerSms();
+		if (!InputValidator.validatePhoneNumber(input.getRecipient())) {
+			return ResponseEntity.badRequest().body("Please provide valid phone number format (+359XXXXXXXXX).");
+		}
+		
+		UUID smsId = notificationService.registerSms(input);
 		
 		messagePublisher.sendAsyncMessage(smsId, MessageChannel.SMS);
 		
@@ -45,9 +55,13 @@ public class NotificationsController {
 	}
 	
 	@PostMapping(path = "/slack")
-	public ResponseEntity<?> sendSlackMessage() {
+	public ResponseEntity<?> sendSlackMessage(@RequestBody SlackInput input) {
 		
-		UUID slackMsgId = notificationService.registerSlack();
+		if (!InputValidator.validateSlackChannel(input.getChannel())) {
+			return ResponseEntity.badRequest().body("Please provide valid Slack channel (C1234567890).");
+		}
+		
+		UUID slackMsgId = notificationService.registerSlack(input);
 		
 		messagePublisher.sendAsyncMessage(slackMsgId, MessageChannel.SLACK);
 		
@@ -55,24 +69,4 @@ public class NotificationsController {
 
 	}
 	
-	@Data
-	public static class EmailInput {
-		private String subject;
-		private String body;
-		private String recipient;
-		private List<String> attachments;
-		private List<String> cc;
-	}
-	
-	@Data
-	public static class SmsInput {
-		private String recipient;
-		private String body;
-	}
-	
-	@Data
-	public static class SlackInput {
-		private String channel;
-		private String message;
-	}
 }
