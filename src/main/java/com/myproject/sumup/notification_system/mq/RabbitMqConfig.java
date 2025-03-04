@@ -70,6 +70,10 @@ public class RabbitMqConfig {
 				.with(RESOLVE_ROUTING_KEY.apply(MessageChannel.SLACK));
 	}
 	
+	
+	/**
+	 * Convert queue messages to/from JSON
+	 */
 	@Bean
 	public MessageConverter jsonMessageConverter() {
 	    return new Jackson2JsonMessageConverter();

@@ -22,6 +22,12 @@ public class MessagePublisher {
 	@Autowired
 	private RabbitTemplate rabbitTemplate;
 	
+	/**
+	 * Asynchronously publish a Message to the corresponding channel queue.
+	 * 
+	 * @param messageId
+	 * @param channel
+	 */
 	@Async
 	public void sendAsyncMessage(UUID messageId, MessageChannel channel) {
 		LOG.debug("Publishing message {} for channel {}.", messageId, channel);

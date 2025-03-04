@@ -2,6 +2,9 @@ package com.myproject.sumup.notification_system.mq;
 
 import java.util.UUID;
 
+/**
+ * JSON wrapper for message ID.
+ */
 public class MessageId {
 
 	private UUID messageId;

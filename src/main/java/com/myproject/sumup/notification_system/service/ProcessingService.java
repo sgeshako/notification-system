@@ -18,11 +18,24 @@ public class ProcessingService {
 	@Autowired
 	private ProcessingRepository processingRepo;
 	
+	/**
+	 * Update the status of the given Message.
+	 * 
+	 * @param messageId
+	 * @param status
+	 */
 	public void updateProcessingStatus(UUID messageId, ProcessingStatus status) {
 		
 		updateProcessingStatus(messageId, status, null);
 	}
 	
+	/**
+	 * Update the status with details for the given Message.
+	 * 
+	 * @param messageId
+	 * @param status
+	 * @param details
+	 */
 	public void updateProcessingStatus(UUID messageId, ProcessingStatus status, String details) {
 		
 		Processing oldStatus = processingRepo.findByMessage_Id(messageId);

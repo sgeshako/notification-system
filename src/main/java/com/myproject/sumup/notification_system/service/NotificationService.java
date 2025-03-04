@@ -35,6 +35,12 @@ public class NotificationService {
 	@Autowired
 	private ProcessingRepository processingRepo;
 	
+	/**
+	 * Save email data and create a message ID for this email.
+	 * 
+	 * @param input the email data
+	 * @return the generated message ID
+	 */
 	public UUID registerEmail(EmailInput input) {
 		NotificationMessage persistedMessage = insertNotificationMessage(MessageChannel.EMAIL);
 		insertProcessingRecord(persistedMessage);
@@ -49,6 +55,12 @@ public class NotificationService {
 		return persistedMessage.getId();
 	}
 	
+	/**
+	 * Save SMS data and create a message ID for this SMS.
+	 * 
+	 * @param input the SMS data
+	 * @return the generated message ID
+	 */
 	public UUID registerSms(SmsInput input) {
 		NotificationMessage persistedMessage = insertNotificationMessage(MessageChannel.EMAIL);
 		insertProcessingRecord(persistedMessage);
@@ -62,6 +74,12 @@ public class NotificationService {
 		return persistedMessage.getId();
 	}
 	
+	/**
+	 * Save Slack message data and create a message ID.
+	 * 
+	 * @param input the Slack message data
+	 * @return the generated message ID
+	 */
 	public UUID registerSlack(SlackInput input) {
 		NotificationMessage persistedMessage = insertNotificationMessage(MessageChannel.EMAIL);
 		insertProcessingRecord(persistedMessage);
